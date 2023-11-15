@@ -43,7 +43,7 @@ char *args_path(char **parse, char **new)
 
 		if (stat(total, &status) == 0)
 		{
-			for (k = 0; parse[k] != '\0'; k++)
+			for (k = 0; *parse[k] != '\0'; k++)
 				;
 			cat = malloc(sizeof(char *) * (k + 1));
 			cat[k] = NULL;
