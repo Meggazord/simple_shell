@@ -7,104 +7,83 @@
 
 #define BUFFER_SIZE 1024
 
-/**
- * main - Entry point for the simple shell program
- *
- * Return: Always 0 (Success)
- */
+int main(void) {
+    char *buffer = NULL;
+    size_t bufsize = 0;
 
-int main(void)
-{
-	char *buffer = NULL;
-	size_t bufsize = 0;
+    while (1) {
+        printf(":) ");
+        ssize_t characters_read = getline(&buffer, &bufsize, stdin);
 
-	while (1)
-	{
-		printf(":) ");
+        if (characters_read == -1) {
+            printf("\n");
+            break;
+        }
 
-		ssize_t characters_read = getline(&buffer, &bufsize, stdin);
+        buffer[characters_read - 1] = '\0';
 
-		if (characters_read == -1)
-		{
-			printf("\n");
-			break;
-		}
+        pid_t pid = fork();
 
-		buffer[characters_read - 1] = '\0';
+        if (pid == -1) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
 
-		pid_t pid = fork();
+        if (pid == 0) {
 
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
+            char *args[100]; 
+            int i = 0;
 
-		if (pid == 0)
-		{
-			char *args[100];
-			int i = 0;
+            char *token = strtok(buffer, " ");
+            while (token != NULL) {
+                args[i++] = token;
+                token = strtok(NULL, " ");
+            }
 
-			char *token = strtok(buffer, " ");
+            args[i] = NULL;
 
-			while (token != NULL)
-			{
-				args[i++] = token;
-				token = strtok(NULL, " ");
-			}
+            if (access(args[0], X_OK) == 0) {
+                if (execve(args[0], args, NULL) == -1) {
+                    perror("execve");
+                    exit(EXIT_FAILURE);
+                }
+            } else {
+                char *path = getenv("PATH");
+                char *token, *full_path;
 
-			args[i] = NULL;
+                token = strtok(path, ":");
 
-			if (access(args[0], X_OK) == 0)
-			{
-				if (execve(args[0], args, NULL) == -1)
-				{
-					perror("execve");
-					exit(EXIT_FAILURE);
-				}
-			}
-			else
-			{
-				char *path = getenv("PATH");
-				char *token, *full_path;
+                while (token != NULL) {
+                    full_path = malloc(strlen(token) + strlen(args[0]) + 2);
+                    if (full_path == NULL) {
+                        perror("malloc");
+                        exit(EXIT_FAILURE);
+                    }
 
-				token = strtok(path, ":");
+                    sprintf(full_path, "%s/%s", token, args[0]);
 
-				while (token != NULL)
-				{
-					full_path = malloc(strlen(token) + strlen(args[0]) + 2);
-					if (full_path == NULL)
-					{
-						perror("malloc");
-						exit(EXIT_FAILURE);
-					}
+                    if (access(full_path, X_OK) == 0) {
+                        if (execve(full_path, args, NULL) == -1) {
+                            perror("execve");
+                            exit(EXIT_FAILURE);
+                        }
+                    }
 
-					sprintf(full_path, "%s/%s", token, args[0]);
+                    free(full_path);
+                    token = strtok(NULL, ":");
+                }
 
-					if (access(full_path, X_OK) == 0)
-					{
-						if (execve(full_path, args, NULL) == -1)
-						{
-							perror("execve");
-							exit(EXIT_FAILURE);
-						}
-					}
+                printf("%s: command not found\n", args[0]);
+                exit(EXIT_FAILURE);
+            }
+        } else {
 
-					free(full_path);
-					token = strtok(NULL, ":");
-				}
+            wait(NULL);
+        }
+    }
 
-				printf("%s: command not found\n", args[0]);
-				exit(EXIT_FAILURE);
-			}
-		}
-		else
-		{
-			wait(NULL);
-		}
-	}
 
-	free(buffer);
+    free(buffer);
 
-	return (0);
+    return 0;
 }
