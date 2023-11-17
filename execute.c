@@ -26,7 +26,6 @@ void execute(const char *input) {
             perror("Error");
             exit(EXIT_FAILURE);
         } else {
-            // Search for the command in the PATH
             char *path_env = getenv("PATH");
             if (path_env != NULL) {
                 char *path = strtok(path_env, ":");
