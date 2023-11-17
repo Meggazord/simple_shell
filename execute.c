@@ -48,11 +48,6 @@ void execute_child(const char *input)
 
 	args = malloc((MAX_TOKENS + 1) * sizeof(char *));
 
-	if (strcmp(input, "exit") == 0)
-	{
-		exit_shell();
-	}
-
 	if (args == NULL)
 	{
 		output("Memory allocation error.\n");
@@ -91,6 +86,11 @@ void execute_child(const char *input)
 
 void execute(const char *input)
 {
+	if (strcmp(input, "exit") == 0)
+	{
+		exit_shell();
+	}
+
 	pid_t child_pid = fork();
 
 	if (child_pid == -1)
