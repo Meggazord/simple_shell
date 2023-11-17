@@ -86,12 +86,14 @@ void execute_child(const char *input)
 
 void execute(const char *input)
 {
+	pid_t child_pid;
+
 	if (strcmp(input, "exit") == 0)
 	{
 		exit_shell();
 	}
 
-	pid_t child_pid = fork();
+	child_pid = fork();
 
 	if (child_pid == -1)
 	{
