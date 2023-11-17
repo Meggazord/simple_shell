@@ -6,16 +6,19 @@
  * Return: Always 0 (Success)
  */
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	char input[MAX_INPUT];
+    char input[MAX_INPUT];
 
-	while (1)
-	{
-		prompt();
-		get_input(input, sizeof(input));
-		execute(input);
-	}
+    (void)argc;
 
-	return (0);
+    while (1)
+    {
+        prompt();
+        get_input(input, sizeof(input));
+        execute(input, argv);
+    }
+
+    return (0);
 }
+

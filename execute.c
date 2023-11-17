@@ -9,14 +9,20 @@
 
 void execute_command(char **args)
 {
-	if (execve(args[0], args, environ) == -1)
-	{
-		output("Execution error for command: ");
-		output(args[0]);
-		output("\n");
-		perror("Error");
-		exit(EXIT_FAILURE);
-	}
+    char *program_name;
+    char *error_msg;
+
+    program_name = get_program_name(args);
+    error_msg = ": not found\n";
+
+    if (execve(args[0], args, environ) == -1)
+    {
+        write(STDERR_FILENO, program_name, strlen(program_name));
+        write(STDERR_FILENO, ": 1: ", 5);
+        write(STDERR_FILENO, args[0], strlen(args[0]));
+        write(STDERR_FILENO, error_msg, strlen(error_msg));
+        _exit(EXIT_FAILURE);
+    }
 }
 
 
@@ -28,8 +34,8 @@ void execute_command(char **args)
 
 void exit_shell(void)
 {
-	output("Exiting the shell.\n");
-	exit(EXIT_SUCCESS);
+	write(STDOUT_FILENO, "Exiting the shell.\n", 19);
+	_exit(EXIT_SUCCESS);
 }
 
 /**
@@ -84,26 +90,38 @@ void execute_child(const char *input)
  * Return: Nothing
  */
 
-void execute(const char *input)
+void execute(const char *input, char *argv[])
 {
 	pid_t child_pid;
+	char *program_name;
 
 	if (strcmp(input, "exit") == 0)
 	{
 		exit_shell();
 	}
 
+	if (argv[0] == NULL)
+	{
+		write(STDERR_FILENO, "Error: Null argv[0].\n", 21);
+		_exit(EXIT_FAILURE);
+	}
+
+	program_name = get_program_name(argv);
+
 	child_pid = fork();
 
 	if (child_pid == -1)
 	{
-		output("Forking error.\n");
-		exit(EXIT_FAILURE);
+		write(STDERR_FILENO, program_name, strlen(program_name));
+		write(STDERR_FILENO, ": Forking error.\n", 17);
+		_exit(EXIT_FAILURE);
 	}
+
 	else if (child_pid == 0)
 	{
 		execute_child(input);
 	}
+
 	else
 	{
 		wait(NULL);

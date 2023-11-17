@@ -14,11 +14,12 @@ extern char **environ;
 
 void execute_command(char **args);
 void output(const char *result);
-void execute(const char *input);
+void execute(const char *input, char *argv[]);
 void prompt(void);
 void get_input(char *input, size_t size);
 void handle_path(char **args);
 void execute_child(const char *input);
 void exit_shell(void);
+char *get_program_name(char *argv[]);
 
 #endif
