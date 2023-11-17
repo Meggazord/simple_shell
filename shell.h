@@ -12,9 +12,9 @@ extern char **environ;
 #define MAX_INPUT 1024
 #define MAX_TOKENS 100
 
-char **tokenize(char *line);
-int launch(char **args);
-int execute(char **args);
-void print_env(void);
+void output(const char *result);
+void execute(const char *input);
+void prompt(void);
+void get_input(char *input, size_t size);
 
 #endif
