@@ -8,5 +8,5 @@
 
 void prompt(void)
 {
-	output(":) ");
+	output("$ ");
 }
