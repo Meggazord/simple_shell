@@ -9,20 +9,20 @@
 
 void execute_command(char **args)
 {
-    char *program_name;
-    char *error_msg;
+	char *program_name;
+	char *error_msg;
 
-    program_name = get_program_name(args);
-    error_msg = ": not found\n";
+	program_name = get_program_name(args);
+	error_msg = ": not found\n";
 
-    if (execve(args[0], args, environ) == -1)
-    {
-        write(STDERR_FILENO, program_name, strlen(program_name));
-        write(STDERR_FILENO, ": 1: ", 5);
-        write(STDERR_FILENO, args[0], strlen(args[0]));
-        write(STDERR_FILENO, error_msg, strlen(error_msg));
-        _exit(EXIT_FAILURE);
-    }
+	if (execve(args[0], args, environ) == -1)
+	{
+		write(STDERR_FILENO, program_name, strlen(program_name));
+		write(STDERR_FILENO, ": 1: ", 5);
+		write(STDERR_FILENO, args[0], strlen(args[0]));
+		write(STDERR_FILENO, error_msg, strlen(error_msg));
+		_exit(EXIT_FAILURE);
+	}
 }
 
 
@@ -86,6 +86,7 @@ void execute_child(const char *input)
 /**
  * execute - check user input and execute if applicable
  * @input: the input from the user to be handled
+ * @argv: the number of argv
  *
  * Return: Nothing
  */
