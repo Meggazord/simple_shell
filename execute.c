@@ -20,6 +20,51 @@ void execute_command(char **args)
 }
 
 /**
+ * execute_child - executes the command in the child process
+ * @input: the input from the user to be handled
+ *
+ * Return: Nothing
+ */
+
+void execute_child(const char *input)
+{
+	char **args;
+	int i;
+	int args_count;
+	char *token;
+
+	args = malloc((MAX_TOKENS + 1) * sizeof(char *));
+
+	if (args == NULL)
+	{
+		output("Memory allocation error.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	args_count = 0;
+	token = strtok((char *)input, " ");
+
+	while (token != NULL && args_count < MAX_TOKENS)
+	{
+		args[args_count++] = strdup(token);
+		token = strtok(NULL, " ");
+	}
+
+	args[args_count] = NULL;
+
+	handle_path(args);
+	execute_command(args);
+
+	for (i = 0; i < args_count; ++i)
+	{
+		free(args[i]);
+	}
+	free(args);
+
+	exit(EXIT_FAILURE);
+}
+
+/**
  * execute - check user input and execute if applicable
  * @input: the input from the user to be handled
  *
@@ -28,11 +73,6 @@ void execute_command(char **args)
 
 void execute(const char *input)
 {
-	char **args;
-	int i;
-    int args_count;
-    char *token;
-
 	pid_t child_pid = fork();
 
 	if (child_pid == -1)
@@ -40,40 +80,10 @@ void execute(const char *input)
 		output("Forking error.\n");
 		exit(EXIT_FAILURE);
 	}
-
 	else if (child_pid == 0)
 	{
-		args = malloc((MAX_TOKENS + 1) * sizeof(char *));
-
-		if (args == NULL)
-		{
-			output("Memory allocation error.\n");
-			exit(EXIT_FAILURE);
-		}
-
-		args_count = 0;
-		token = strtok((char *)input, " ");
-
-		while (token != NULL && args_count < MAX_TOKENS)
-		{
-			args[args_count++] = strdup(token);
-			token = strtok(NULL, " ");
-		}
-
-		args[args_count] = NULL;
-
-		handle_path(args);
-		execute_command(args);
-
-		for (i = 0; i < args_count; ++i)
-		{
-			free(args[i]);
-		}
-		free(args);
-
-		exit(EXIT_FAILURE);
+		execute_child(input);
 	}
-
 	else
 	{
 		wait(NULL);

@@ -18,5 +18,6 @@ void execute(const char *input);
 void prompt(void);
 void get_input(char *input, size_t size);
 void handle_path(char **args);
+void execute_child(const char *input);
 
 #endif
