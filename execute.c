@@ -19,6 +19,19 @@ void execute_command(char **args)
 	}
 }
 
+
+/**
+ * exit_shell - exits the shell
+ *
+ * Return: Nothing
+ */
+
+void exit_shell(void)
+{
+	output("Exiting the shell.\n");
+	exit(EXIT_SUCCESS);
+}
+
 /**
  * execute_child - executes the command in the child process
  * @input: the input from the user to be handled
@@ -34,6 +47,11 @@ void execute_child(const char *input)
 	char *token;
 
 	args = malloc((MAX_TOKENS + 1) * sizeof(char *));
+
+	if (strcmp(input, "exit") == 0)
+	{
+		exit_shell();
+	}
 
 	if (args == NULL)
 	{
