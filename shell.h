@@ -12,6 +12,8 @@ extern char **environ;
 
 void execute_command(char *buffer);
 void print_environment(void);
+void execute_command_child(char *buffer);
+void execute_command_in_path(char *args[]);
 
 #endif
 
