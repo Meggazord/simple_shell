@@ -2,21 +2,28 @@
 
 int main(void)
 {
-  char *line;
-  size_t size = MAX_INPUT;
-  char **args;
+    char *line = NULL; // Initialize to NULL
+    char **args = NULL;
 
-  while (1)
-  {
-    printf(":) ");
-    getline(&line, &size, stdin);
+    size_t size = MAX_INPUT;
 
-    args = tokenize(line);
-    
-    execute(args);
+    while (1)
+    {
+        printf(":) ");
+        if (getline(&line, &size, stdin) == -1)
+        {
+            free(line); // Free memory before exiting
+            printf("\n");
+            exit(EXIT_SUCCESS);
+        }
 
-    free(args);
-  }
+        args = tokenize(line);
 
-  return (0);
+        if (args != NULL && args[0] != NULL)
+            execute(args);
+
+        free(args); // Free the tokenized arguments
+    }
+
+    return (0);
 }

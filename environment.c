@@ -2,11 +2,11 @@
 
 void print_env(void)
 {
-  extern char **environ;
-  int i = 0;
+    extern char **environ;
+    int i = 0;
 
-  while (environ[i] != NULL)
-  {
-    printf("%s\n", environ[i++]);
-  }
+    while (environ[i] != NULL)
+    {
+        printf("%s\n", environ[i++]);
+    }
 }
