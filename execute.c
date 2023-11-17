@@ -15,7 +15,7 @@ int execute(char **args)
     if (strcmp(args[0], "env") == 0)
     {
         print_env();
-        return 1;
+        return (1);
     }
 
     return launch(args);
