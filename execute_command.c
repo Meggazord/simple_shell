@@ -28,7 +28,7 @@ void execute_command(char *buffer)
 }
 
 /**
- * execute_command_child - Executes a command received as input in the child process.
+ * execute_command_child - Executes a command in the child process.
  *
  * @buffer: Input command to be executed.
  */
@@ -63,7 +63,7 @@ void execute_command_child(char *buffer)
 }
 
 /**
- * execute_command_in_path - Executes a command received as input from the PATH environment variable.
+ * execute_command_in_path - Executes input from the PATH environment variable.
  *
  * @args: Input command and arguments.
  */
