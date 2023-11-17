@@ -8,88 +8,91 @@
  */
 void execute(const char *input)
 {
-    int i;
-    int args_count;
-    char *token;
-    pid_t child_pid = fork();
+	int i;
+	int args_count;
+	char *token;
 
-    if (child_pid == -1)
-    {
-        output("Forking error.\n");
-        exit(EXIT_FAILURE);
-    }
+	pid_t child_pid = fork();
 
-    else if (child_pid == 0)
-    {
-        char **args = malloc((MAX_TOKENS + 1) * sizeof(char *));
-        if (args == NULL)
-        {
-            output("Memory allocation error.\n");
-            exit(EXIT_FAILURE);
-        }
+	if (child_pid == -1)
+	{
+		output("Forking error.\n");
+		exit(EXIT_FAILURE);
+	}
 
-        args_count = 0;
+	else if (child_pid == 0)
+	{
+		char **args = malloc((MAX_TOKENS + 1) * sizeof(char *));
 
-        token = strtok((char *)input, " ");
+		if (args == NULL)
+		{
+			output("Memory allocation error.\n");
+			exit(EXIT_FAILURE);
+		}
 
-        while (token != NULL && args_count < MAX_TOKENS)
-        {
-            args[args_count++] = strdup(token);
-            token = strtok(NULL, " ");
-        }
+		args_count = 0;
 
-        args[args_count] = NULL;
+		token = strtok((char *)input, " ");
 
-        if (access(args[0], X_OK) == 0)
-        {
-            execve(args[0], args, environ);
-            output("Execution error for command: ");
-            output(args[0]);
-            output("\n");
-            perror("Error");
-            exit(EXIT_FAILURE);
-        }
-        else
-        {
-            char *path_env = getenv("PATH");
+		while (token != NULL && args_count < MAX_TOKENS)
+		{
+			args[args_count++] = strdup(token);
+			token = strtok(NULL, " ");
+		}
 
-            if (path_env != NULL)
-            {
-                char *path = strtok(path_env, ":");
+		args[args_count] = NULL;
 
-                while (path != NULL)
-                {
-                    char command_path[MAX_INPUT];
-                    snprintf(command_path, sizeof(command_path), "%s/%s", path, args[0]);
+		if (access(args[0], X_OK) == 0)
+		{
+			execve(args[0], args, environ);
+			output("Execution error for command: ");
+			output(args[0]);
+			output("\n");
+			perror("Error");
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			char *path_env = getenv("PATH");
 
-                    if (access(command_path, X_OK) == 0)
-                    {
-                        execve(command_path, args, environ);
-                        output("Execution error for command: ");
-                        output(args[0]);
-                        output("\n");
-                        perror("Error");
-                        exit(EXIT_FAILURE);
-                    }
+			if (path_env != NULL)
+			{
+				char *path = strtok(path_env, ":");
 
-                    path = strtok(NULL, ":");
-                }
-            }
+				while (path != NULL)
+				{
+					char command_path[MAX_INPUT];
 
-            output("Command not found: ");
-            output(args[0]);
-            output("\n");
-            exit(EXIT_FAILURE);
-        }
+					snprintf(command_path, sizeof(command_path), "%s/%s", path, args[0]);
 
-        for (i = 0; i < args_count; ++i)
-        {
-            free(args[i]);
-        }
-        free(args);
-    }
-    else
-    {
-        wait(NULL);
-    }
+					if (access(command_path, X_OK) == 0)
+					{
+						execve(command_path, args, environ);
+						output("Execution error for command: ");
+						output(args[0]);
+						output("\n");
+						perror("Error");
+						exit(EXIT_FAILURE);
+					}
+
+					path = strtok(NULL, ":");
+				}
+			}
+
+			output("Command not found: ");
+			output(args[0]);
+			output("\n");
+			exit(EXIT_FAILURE);
+		}
+
+		for (i = 0; i < args_count; ++i)
+		{
+			free(args[i]);
+		}
+		free(args);
+	}
+	else
+	{
+		wait(NULL);
+	}
 }

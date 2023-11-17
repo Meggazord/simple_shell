@@ -8,14 +8,14 @@
 
 int main(void)
 {
-    char input[MAX_INPUT];
+	char input[MAX_INPUT];
 
-    while (1)
-    {
-        prompt();
-        get_input(input, sizeof(input));
-        execute(input);
-    }
+	while (1)
+	{
+		prompt();
+		get_input(input, sizeof(input));
+		execute(input);
+	}
 
-    return (0);
+	return (0);
 }

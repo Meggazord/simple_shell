@@ -9,20 +9,20 @@
  */
 void get_input(char *input, size_t size)
 {
-    ssize_t read_chars;
+	ssize_t read_chars;
 
-    read_chars = read(STDIN_FILENO, input, size);
-    if (read_chars == -1)
-    {
-        output("Error reading input.\n");
-        exit(EXIT_FAILURE);
-    }
+	read_chars = read(STDIN_FILENO, input, size);
+	if (read_chars == -1)
+	{
+		output("Error reading input.\n");
+		exit(EXIT_FAILURE);
+	}
 
-    if (read_chars == 0 || (read_chars == 1 && input[0] == '\n'))
-    {
-        prompt();
-        exit(EXIT_SUCCESS);
-    }
+	if (read_chars == 0 || (read_chars == 1 && input[0] == '\n'))
+	{
+		prompt();
+		exit(EXIT_SUCCESS);
+	}
 
-    input[read_chars - 1] = '\0';
+	input[read_chars - 1] = '\0';
 }
