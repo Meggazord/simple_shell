@@ -1,15 +1,9 @@
 #include "shell.h"
 
 /**
-<<<<<<< HEAD
  * execute_command - Executes a command received as input.
  *
  * @buffer: Input command to be executed.
-=======
- * execute_command - Execute a command received as input
- *
- * @buffer: Input command to be executed
->>>>>>> 8a29a95046f15b69dad5c0fb0939a6a459ddea3a
  */
 
 void execute_command(char *buffer)
@@ -34,14 +28,9 @@ void execute_command(char *buffer)
 }
 
 /**
-<<<<<<< HEAD
  * execute_command_child - Executes a command received as input in the child process.
  *
  * @buffer: Input command to be executed.
-=======
- * execute_command_child - Execute a command received as input
- * @buffer: Input command to be executed
->>>>>>> 8a29a95046f15b69dad5c0fb0939a6a459ddea3a
  */
 
 void execute_command_child(char *buffer)
@@ -74,14 +63,9 @@ void execute_command_child(char *buffer)
 }
 
 /**
-<<<<<<< HEAD
  * execute_command_in_path - Executes a command received as input from the PATH environment variable.
  *
  * @args: Input command and arguments.
-=======
- * execute_command_in_path - Execute a command received as input
- * @args: the input
->>>>>>> 8a29a95046f15b69dad5c0fb0939a6a459ddea3a
  */
 
 void execute_command_in_path(char *args[])
