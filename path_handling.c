@@ -30,7 +30,9 @@ void handle_path(char **args)
 			{
 				char command_path[MAX_INPUT];
 
-				snprintf(command_path, sizeof(command_path), "%s/%s", path, args[0]);
+				strcpy(command_path, path);
+                strcat(command_path, "/");
+                strcat(command_path, args[0]);
 
 				if (access(command_path, X_OK) == 0)
 				{
