@@ -75,7 +75,7 @@ void execute(const char *input)
 {
     pid_t child_pid;
 
-    if (strcmp(input, "exit") == 0)
+    if (input[0] == 'e' && input[1] == 'x' && input[2] == 'i' && input[3] == 't' && input[4] == '\0')
     {
         exit_shell();
     }

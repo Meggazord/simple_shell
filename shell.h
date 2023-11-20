@@ -13,7 +13,7 @@ extern char **environ;
 #define MAX_TOKENS 100
 
 void prompt(void);
-void get_input(char *input, size_t size);
+void get_input(char *input, size_t max_size);
 void tokenize_input(const char *input, char **args);
 void execute_command(char **args);
 void execute(const char *input);
@@ -22,5 +22,9 @@ void exit_shell(void);
 void handle_path(char **args);
 char *get_program_name(char *argv[]);
 void output(const char *result);
+char *_strcat(char *dest, char *src);
+char *_strcpy(char *dest, char *src);
+int _strlen(const char *s);
+char *_getenv(const char *var);
 
 #endif

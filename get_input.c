@@ -19,25 +19,28 @@ void prompt(void)
  * Return: Nothing
  */
 
-void get_input(char *input, size_t size)
+void get_input(char *input, size_t max_size)
 {
-	size_t read_chars;
+    ssize_t read_chars, i;
 
-	prompt();
+    prompt();
 
-	read_chars = getline(&input, &size, stdin);
+    read_chars = read(STDIN_FILENO, input, max_size);
 
-	if (read_chars == (size_t)-1)
-	{
-		output("Error reading input.\n");
-		free(input);
-		exit(EXIT_FAILURE);
-	}
+    if (read_chars == -1)
+    {
+        output("Error reading input.\n");
+        exit(EXIT_FAILURE);
+    }
 
-	if (read_chars == 1 || input[0] == '\n') 
-	{
-		return;
-	}
+    input[read_chars] = '\0';
 
-	input[read_chars - 1] = '\0';
+    for (i = 0; i < read_chars; ++i)
+    {
+        if (input[i] == '\n')
+        {
+            input[i] = '\0';
+            break;
+        }
+    }
 }

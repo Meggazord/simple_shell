@@ -9,43 +9,45 @@
 
 void handle_path(char **args)
 {
-	if (access(args[0], X_OK) == 0)
-	{
-		execve(args[0], args, environ);
-		output("Execution error for command: ");
-		output(args[0]);
-		output("\n");
-		perror("Error");
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		char *path_env = getenv("PATH");
+	char *path_env, *path, *token;
 
-		if (path_env != NULL)
-		{
-			char *path = strtok(path_env, ":");
+    if (access(args[0], X_OK) == 0)
+    {
+        execve(args[0], args, environ);
+        output("Execution error for command: ");
+        output(args[0]);
+        output("\n");
+        perror("Error");
+        exit(EXIT_FAILURE);
+    }
 
-			while (path != NULL)
-			{
-				char command_path[MAX_INPUT];
+    else
+    {
+        path_env = _getenv("PATH");
 
-				strcpy(command_path, path);
-                strcat(command_path, "/");
-                strcat(command_path, args[0]);
+        if (path_env != NULL)
+        {
+            path = path_env;
 
-				if (access(command_path, X_OK) == 0)
-				{
-					execve(command_path, args, environ);
-					output("Execution error for command: ");
-					output(args[0]);
-					output("\n");
-					perror("Error");
-					exit(EXIT_FAILURE);
-				}
+            while ((token = strtok(path, ":")) != NULL)
+            {
+                char command_path[MAX_INPUT];
+                _strcpy(command_path, token);
+                _strcat(command_path, "/");
+                _strcat(command_path, args[0]);
 
-				path = strtok(NULL, ":");
-			}
-		}
-	}
+                if (access(command_path, X_OK) == 0)
+                {
+                    execve(command_path, args, environ);
+                    output("Execution error for command: ");
+                    output(args[0]);
+                    output("\n");
+                    perror("Error");
+                    exit(EXIT_FAILURE);
+                }
+
+                path = NULL;
+            }
+        }
+    }
 }

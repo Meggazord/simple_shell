@@ -14,7 +14,7 @@ int main(void)
 
 	while (1)
 	{
-		get_input(input, sizeof(input));
+		get_input(input, MAX_INPUT);
 		execute(input);
 	}
 

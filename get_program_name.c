@@ -9,13 +9,19 @@
 
 char *get_program_name(char *argv[])
 {
-	char *program_name;
+    char *program_name, *ptr;
 
-	program_name = strrchr(argv[0], '/');
+	program_name = argv[0];
+    ptr = argv[0];
 
-	if (program_name == NULL)
-	{
-		return (argv[0]);
-	}
-	return (program_name + 1);
+    while (*ptr != '\0')
+    {
+        if (*ptr == '/')
+        {
+            program_name = ptr + 1;
+        }
+        ptr++;
+    }
+
+    return (program_name);
 }
