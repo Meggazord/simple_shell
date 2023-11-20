@@ -18,8 +18,9 @@ void execute(const char *input, char *argv[]);
 void prompt(void);
 void get_input(char *input, size_t size);
 void handle_path(char **args);
-void execute_child(const char *input);
+void execute(const char *input, char *argv[]);
 void exit_shell(void);
 char *get_program_name(char *argv[]);
+void tokenize_input(const char *input, char **args);
 
 #endif

@@ -17,11 +17,11 @@ void execute_command(char **args)
 
 	if (execve(args[0], args, environ) == -1)
 	{
-		write(STDERR_FILENO, program_name, strlen(program_name));
-		write(STDERR_FILENO, ": 1: ", 5);
-		write(STDERR_FILENO, args[0], strlen(args[0]));
-		write(STDERR_FILENO, error_msg, strlen(error_msg));
-		_exit(EXIT_FAILURE);
+		output(program_name);  // Using the output function from shell.h
+        output(": 1: ");
+        output(args[0]);
+        output(error_msg);
+        _exit(EXIT_FAILURE);
 	}
 }
 
@@ -34,7 +34,7 @@ void execute_command(char **args)
 
 void exit_shell(void)
 {
-	write(STDOUT_FILENO, "Exiting the shell.\n", 19);
+	output("Exiting the shell.\n");
 	_exit(EXIT_SUCCESS);
 }
 
@@ -45,43 +45,22 @@ void exit_shell(void)
  * Return: Nothing
  */
 
-void execute_child(const char *input)
-{
-	char **args;
-	int i;
-	int args_count;
-	char *token;
+void execute_child(const char *input) {
+    char *args[MAX_TOKENS + 1]; // Limit tokens for safety
+    int i;
+    
+    tokenize_input(input, args);
 
-	args = malloc((MAX_TOKENS + 1) * sizeof(char *));
+    handle_path(args);
+    execute_command(args);
 
-	if (args == NULL)
-	{
-		output("Memory allocation error.\n");
-		exit(EXIT_FAILURE);
-	}
-
-	args_count = 0;
-	token = strtok((char *)input, " ");
-
-	while (token != NULL && args_count < MAX_TOKENS)
-	{
-		args[args_count++] = strdup(token);
-		token = strtok(NULL, " ");
-	}
-
-	args[args_count] = NULL;
-
-	handle_path(args);
-	execute_command(args);
-
-	for (i = 0; i < args_count; ++i)
-	{
-		free(args[i]);
-	}
-	free(args);
-
-	exit(EXIT_FAILURE);
+    for (i = 0; args[i] != NULL; ++i) {
+        free(args[i]);
+    }
+    // No need to free(args), as it's not dynamically allocated here
+    exit(EXIT_FAILURE);
 }
+
 
 /**
  * execute - check user input and execute if applicable
@@ -103,7 +82,7 @@ void execute(const char *input, char *argv[])
 
 	if (argv[0] == NULL)
 	{
-		write(STDERR_FILENO, "Error: Null argv[0].\n", 21);
+		output("Error: Null argv[0].\n");
 		_exit(EXIT_FAILURE);
 	}
 
@@ -113,8 +92,8 @@ void execute(const char *input, char *argv[])
 
 	if (child_pid == -1)
 	{
-		write(STDERR_FILENO, program_name, strlen(program_name));
-		write(STDERR_FILENO, ": Forking error.\n", 17);
+		output(program_name);
+		output(": Forking error.\n");
 		_exit(EXIT_FAILURE);
 	}
 
