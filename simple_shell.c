@@ -8,17 +8,14 @@
  * Return: Always 0 (Success)
  */
 
-int main(int argc, char *argv[])
+int main(void)
 {
 	char input[MAX_INPUT];
 
-	(void)argc;
-
 	while (1)
 	{
-		prompt();
 		get_input(input, sizeof(input));
-		execute(input, argv);
+		execute(input);
 	}
 
 	return (0);

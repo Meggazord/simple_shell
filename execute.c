@@ -17,7 +17,7 @@ void execute_command(char **args)
 
 	if (execve(args[0], args, environ) == -1)
 	{
-		output(program_name);  // Using the output function from shell.h
+		output(program_name);
         output(": 1: ");
         output(args[0]);
         output(error_msg);
@@ -45,19 +45,20 @@ void exit_shell(void)
  * Return: Nothing
  */
 
-void execute_child(const char *input) {
-    char *args[MAX_TOKENS + 1]; // Limit tokens for safety
+void execute_child(const char *input)
+{
+    char *args[MAX_TOKENS + 1];
     int i;
     
     tokenize_input(input, args);
-
     handle_path(args);
     execute_command(args);
 
-    for (i = 0; args[i] != NULL; ++i) {
+    for (i = 0; args[i] != NULL; ++i)
+    {
         free(args[i]);
     }
-    // No need to free(args), as it's not dynamically allocated here
+
     exit(EXIT_FAILURE);
 }
 
@@ -70,40 +71,28 @@ void execute_child(const char *input) {
  * Return: Nothing
  */
 
-void execute(const char *input, char *argv[])
+void execute(const char *input)
 {
-	pid_t child_pid;
-	char *program_name;
+    pid_t child_pid;
 
-	if (strcmp(input, "exit") == 0)
-	{
-		exit_shell();
-	}
+    if (strcmp(input, "exit") == 0)
+    {
+        exit_shell();
+    }
 
-	if (argv[0] == NULL)
-	{
-		output("Error: Null argv[0].\n");
-		_exit(EXIT_FAILURE);
-	}
+    child_pid = fork();
 
-	program_name = get_program_name(argv);
-
-	child_pid = fork();
-
-	if (child_pid == -1)
-	{
-		output(program_name);
-		output(": Forking error.\n");
-		_exit(EXIT_FAILURE);
-	}
-
-	else if (child_pid == 0)
-	{
-		execute_child(input);
-	}
-
-	else
-	{
-		wait(NULL);
-	}
+    if (child_pid == -1)
+    {
+        output("Forking error.\n");
+        _exit(EXIT_FAILURE);
+    }
+    else if (child_pid == 0)
+    {
+        execute_child(input);
+    }
+    else
+    {
+        wait(NULL);
+    }
 }
