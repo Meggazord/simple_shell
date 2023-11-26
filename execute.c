@@ -34,7 +34,6 @@ void execute_command(char **args)
 
 void exit_shell(void)
 {
-	output("Exiting the shell.\n");
 	_exit(EXIT_SUCCESS);
 }
 
