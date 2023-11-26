@@ -9,5 +9,5 @@
 
 void output(const char *output_text)
 {
-	write(STDOUT_FILENO, output_text, strlen(output_text));
+	write(STDOUT_FILENO, output_text, _strlen(output_text));
 }
