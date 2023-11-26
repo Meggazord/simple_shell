@@ -88,9 +88,8 @@ void execute_command(char **args)
 
 	if (execve(args[0], args, environ) == -1)
 	{
-		output(program_name);
 		output(": 1: ");
-		output(args[0]);
+		output(program_name);
 		output(error_msg);
 		_exit(EXIT_FAILURE);
 	}
