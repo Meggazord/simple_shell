@@ -38,7 +38,6 @@ void tokenize_input(const char *input, char **args)
 			free(input_copy);
 			return;
 		}
-
 		_strcpy(args[args_count], token);
 		args_count++;
 		token = strtok(NULL, " \n");
