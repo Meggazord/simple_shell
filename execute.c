@@ -1,30 +1,38 @@
 #include "shell.h"
 
 /**
- * execute_command - check user input and execute if applicable
- * @args: the input from the user to be handled
+ * execute - check user input and execute if applicable
+ * @input: the input from the user to be handled
  *
  * Return: Nothing
  */
 
-void execute_command(char **args)
+void execute(const char *input)
 {
-	char *program_name;
-	char *error_msg;
+	pid_t child_pid;
 
-	program_name = get_program_name(args);
-	error_msg = ": not found\n";
-
-	if (execve(args[0], args, environ) == -1)
+	if (input[0] == 'e' && input[1] == 'x' && input[2] == 'i' &&
+		input[3] == 't' && input[4] == '\0')
 	{
-		output(program_name);
-		output(": 1: ");
-		output(args[0]);
-		output(error_msg);
+		exit_shell();
+	}
+
+	child_pid = fork();
+
+	if (child_pid == -1)
+	{
+		output("Forking error.\n");
 		_exit(EXIT_FAILURE);
 	}
+	else if (child_pid == 0)
+	{
+		execute_child(input);
+	}
+	else
+	{
+		wait(NULL);
+	}
 }
-
 
 /**
  * exit_shell - exits the shell
@@ -61,37 +69,27 @@ void execute_child(const char *input)
 	exit(EXIT_FAILURE);
 }
 
-
 /**
- * execute - check user input and execute if applicable
- * @input: the input from the user to be handled
+ * execute_command - check user input and execute if applicable
+ * @args: the input from the user to be handled
  *
  * Return: Nothing
  */
 
-void execute(const char *input)
+void execute_command(char **args)
 {
-	pid_t child_pid;
+	char *program_name;
+	char *error_msg;
 
-	if (input[0] == 'e' && input[1] == 'x' && input[2] == 'i' &&
-		input[3] == 't' && input[4] == '\0')
+	program_name = get_program_name(args);
+	error_msg = ": not found\n";
+
+	if (execve(args[0], args, environ) == -1)
 	{
-		exit_shell();
-	}
-
-	child_pid = fork();
-
-	if (child_pid == -1)
-	{
-		output("Forking error.\n");
+		output(program_name);
+		output(": 1: ");
+		output(args[0]);
+		output(error_msg);
 		_exit(EXIT_FAILURE);
-	}
-	else if (child_pid == 0)
-	{
-		execute_child(input);
-	}
-	else
-	{
-		wait(NULL);
 	}
 }
