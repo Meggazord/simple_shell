@@ -9,8 +9,10 @@
 
 char *_strcat(char *dest, char *src)
 {
-	int d = 0;
-	int s = 0;
+	int d, s;
+
+	d = 0;
+	s = 0;
 
 	while (dest[d])
 	{
