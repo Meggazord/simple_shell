@@ -33,8 +33,6 @@ void get_input(char *input, size_t max_size)
 		exit(EXIT_FAILURE);
 	}
 
-	input[read_chars] = '\0';
-
 	for (i = 0; i < read_chars; ++i)
 	{
 		if (input[i] == '\n')
