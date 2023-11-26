@@ -81,7 +81,9 @@ void execute_command(char **args)
 	char *program_name;
 	char *error_msg;
 
-	program_name = get_program_name(args);
+	/*program_name = get_program_name(args);*/
+	program_name = args[0];
+
 	error_msg = ": not found\n";
 
 	if (execve(args[0], args, environ) == -1)
