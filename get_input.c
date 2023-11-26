@@ -35,6 +35,12 @@ void get_input(char *input, size_t max_size)
 
 	input[read_chars] = '\0';
 
+	if (input[0] == 'e' && input[1] == 'x' && input[2] == 'i' &&
+		input[3] == 't')
+	{
+		exit_shell();
+	}
+
 	for (i = 0; i < read_chars; ++i)
 	{
 		if (input[i] == '\n')
