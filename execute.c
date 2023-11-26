@@ -12,7 +12,7 @@ void execute(const char *input)
 	pid_t child_pid;
 
 	if (input[0] == 'e' && input[1] == 'x' && input[2] == 'i' &&
-		input[3] == 't' && input[4] == '\0')
+		input[3] == 't' && (input[4] == ' ' || input[4] == '\0'))
 	{
 		exit_shell();
 	}
