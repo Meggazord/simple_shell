@@ -9,7 +9,6 @@
 
 char *_getenv(const char *var)
 {
-	extern char **environ;
 	size_t len;
 	char **env;
 

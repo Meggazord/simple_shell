@@ -2,8 +2,6 @@
 
 /**
  * main - Entry point for the simple shell program
- * @argc: arguments
- * @argv: arguments array
  *
  * Return: Always 0 (Success)
  */

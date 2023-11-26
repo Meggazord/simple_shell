@@ -18,10 +18,10 @@ void execute_command(char **args)
 	if (execve(args[0], args, environ) == -1)
 	{
 		output(program_name);
-        output(": 1: ");
-        output(args[0]);
-        output(error_msg);
-        _exit(EXIT_FAILURE);
+		output(": 1: ");
+		output(args[0]);
+		output(error_msg);
+		_exit(EXIT_FAILURE);
 	}
 }
 
@@ -47,52 +47,52 @@ void exit_shell(void)
 
 void execute_child(const char *input)
 {
-    char *args[MAX_TOKENS + 1];
-    int i;
-    
-    tokenize_input(input, args);
-    handle_path(args);
-    execute_command(args);
+	char *args[MAX_TOKENS + 1];
+	int i;
 
-    for (i = 0; args[i] != NULL; ++i)
-    {
-        free(args[i]);
-    }
+	tokenize_input(input, args);
+	handle_path(args);
+	execute_command(args);
 
-    exit(EXIT_FAILURE);
+	for (i = 0; args[i] != NULL; ++i)
+	{
+		free(args[i]);
+	}
+
+	exit(EXIT_FAILURE);
 }
 
 
 /**
  * execute - check user input and execute if applicable
  * @input: the input from the user to be handled
- * @argv: the number of argv
  *
  * Return: Nothing
  */
 
 void execute(const char *input)
 {
-    pid_t child_pid;
+	pid_t child_pid;
 
-    if (input[0] == 'e' && input[1] == 'x' && input[2] == 'i' && input[3] == 't' && input[4] == '\0')
-    {
-        exit_shell();
-    }
+	if (input[0] == 'e' && input[1] == 'x' && input[2] == 'i' &&
+		input[3] == 't' && input[4] == '\0')
+	{
+		exit_shell();
+	}
 
-    child_pid = fork();
+	child_pid = fork();
 
-    if (child_pid == -1)
-    {
-        output("Forking error.\n");
-        _exit(EXIT_FAILURE);
-    }
-    else if (child_pid == 0)
-    {
-        execute_child(input);
-    }
-    else
-    {
-        wait(NULL);
-    }
+	if (child_pid == -1)
+	{
+		output("Forking error.\n");
+		_exit(EXIT_FAILURE);
+	}
+	else if (child_pid == 0)
+	{
+		execute_child(input);
+	}
+	else
+	{
+		wait(NULL);
+	}
 }
