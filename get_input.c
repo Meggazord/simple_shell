@@ -50,3 +50,14 @@ void get_input(char *input, size_t max_size)
 		}
 	}
 }
+
+/**
+ * exit_shell - exits the shell
+ *
+ * Return: Nothing
+ */
+
+void exit_shell(void)
+{
+	_exit(EXIT_SUCCESS);
+}
