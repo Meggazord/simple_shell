@@ -5,7 +5,7 @@
  * @s2: second string pointer
  * Return: negative if s1 < s2, 0 if s1 == s2, positive if s1 > s2
  */
-int _strcmp(char *s1, char *s2)
+int _strcmp(const char *s1, const char *s2)
 {
 	int x;
 
