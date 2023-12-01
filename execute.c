@@ -56,10 +56,14 @@ void exit_shell(void)
  *
  * Return: Nothing
  */
-void print_environment() {
-    char **env = environ;
-    while (*env != NULL) {
-        output(*env); // Print each environment variable
+void print_environment()
+{
+    char **env;
+
+    env = environ;
+    while (*env != NULL)
+    {
+        output(*env);
         output("\n");
         env++;
     }
