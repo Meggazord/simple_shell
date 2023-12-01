@@ -17,6 +17,12 @@ void execute(const char *input)
 		exit_shell();
 	}
 
+	if (_strcmp(input, "env") == 0)
+	{
+        print_environment();
+        return;
+    }
+
 	child_pid = fork();
 
 	if (child_pid == -1)
@@ -43,6 +49,20 @@ void execute(const char *input)
 void exit_shell(void)
 {
 	_exit(EXIT_SUCCESS);
+}
+
+/**
+ * print_environment - prints the environment variables
+ *
+ * Return: Nothing
+ */
+void print_environment() {
+    char **env = environ;
+    while (*env != NULL) {
+        output(*env); // Print each environment variable
+        output("\n");
+        env++;
+    }
 }
 
 /**
