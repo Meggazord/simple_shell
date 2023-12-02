@@ -56,6 +56,7 @@ void exit_shell(void)
  *
  * Return: Nothing
  */
+
 void print_environment()
 {
     char **env;
